@@ -32,3 +32,25 @@ Install Dependencies: Ensure all dependencies are installed in your virtual envi
 Build and Install Your Package:
 `python setup.py sdist bdist_wheel`
 `pip install .`
+
+`[Cookiecutter](https://cookiecutter.readthedocs.io/en/stable/index.html)`   
+
+Parent Directory:
+Python
+
+`sys.path.insert(0, '../')`
+
+Specific Directory (e.g., my_directory):
+Python
+
+`sys.path.insert(0, '/path/to/my_directory')`
+
+Sibling Directory (relative to the current file):
+Python
+
+`sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../sibling_directory'))`
+
+Grandparent Directory:
+Python
+
+`sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../'))`

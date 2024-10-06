@@ -129,8 +129,8 @@ icici_broker = 0
 angel_broker = 0
 alice_broker = 0
 fyers_broker = 0
-zerodha_broker = 1
-upstox_broker = 0
+zerodha_broker = 0
+upstox_broker = 1
 iifl_broker = 0
 
 importLibrary()
