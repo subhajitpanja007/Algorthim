@@ -54,3 +54,8 @@ Grandparent Directory:
 Python
 
 `sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../'))`
+
+create constants.py with the following content
+
+`CLIENT_ID = ""`
+`CLIENT_SECRET = ""`
