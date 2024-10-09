@@ -15,14 +15,13 @@ from Upstox.constants import CLIENT_ID, CLIENT_SECRET
 step = 2
 step = int(step)
 
-
 def main():
 
     client_id = CLIENT_ID
     client_secret = CLIENT_SECRET
 
-    redirect_uri = 'https://www.google.com'  # str |
-    api_version = '2.0'  # str | API Version Header
+    redirect_uri = 'https://www.google.com' # str | 
+    api_version = '2.0' # str | API Version Header
     grant_type = 'authorization_code'
     parse_url = urllib.parse.quote(redirect_uri, safe="")
 
@@ -51,13 +50,12 @@ def main():
 
         response = requests.post(token_url, headers=headers, data=data)
         json_response = response.json()
-
+        
         print(json_response)
         print()
         print("Copy this:", json_response['access_token'])
         with open("upstox_access_token.txt", 'w') as file:
             file.write(json_response['access_token'])
-
 
 if __name__ == "__main__":
     main()

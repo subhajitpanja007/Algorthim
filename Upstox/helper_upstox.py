@@ -33,7 +33,7 @@ gzipped_content = BytesIO(response.content)
 
 with gzip.open(gzipped_content, 'rb') as f:
     df2 = pd.read_csv(f)
-    #df2.to_csv('111.csv')
+    df2.to_csv('111.csv')
 
 def getNiftyExpiryDate():
     nifty_expiry = {
@@ -343,7 +343,15 @@ def placeOrder(inst ,t_type,qty,order_type,price,variety, papertrading=0):
     # Login and authorization
     configuration.access_token = access_token
 
-    instrument_key = df2[df2['tradingsymbol'] == inst]['instrument_key'].values[0]
+    print(df2)
+
+    if not df2[df2['tradingsymbol'] == inst].empty:
+        instrument_key = df2[df2['tradingsymbol'] == inst]['instrument_key'].values[0]
+    # If no data for 'tradingsymbol', check for 'name'
+    else:
+        print(inst)
+        instrument_key = df2[df2['name'] == inst]['instrument_key'].values[0]
+    #instrument_key = df2[df2['tradingsymbol'] == inst]['instrument_key'].values[0]
 
     #papertrading = 1 #if this is 1, then real trades will be placed
     dt = datetime.datetime.now()

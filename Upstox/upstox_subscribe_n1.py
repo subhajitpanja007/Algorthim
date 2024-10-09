@@ -19,6 +19,20 @@ import re
 import helper_upstox as helper
 import MarketDataFeed_pb2 as pb
 
+import datetime as dt
+
+start_time = dt.time(9, 15)
+end_time = dt.time(15, 30)
+
+
+while True:
+    current_time = dt.datetime.now().time()
+    if not (start_time <= current_time <= end_time):
+        print("Waiting for market hours (09:15 to 03:30)")
+        time.sleep(60)
+    else:
+        print("Market hours are open")
+        break
 
 
 
@@ -34,12 +48,17 @@ nf_expiry=helper.getNiftyExpiryDate()
 bnf_expiry = helper.getBankNiftyExpiryDate()
 fin_expiry = helper.getFinNiftyExpiryDate()
 
-#Put all options in the beginning
+#Put all indexes here
 symbolList1 = [
     'NSE_INDEX|Nifty 50',
     'NSE_INDEX|Nifty Bank',
     'NSE_INDEX|NIFTY MID SELECT',
     'NSE_INDEX|Nifty Fin Service',
+]
+
+eqList = [
+    # 'SBIN',
+    # 'TATAMOTORS',
 ]
 
 app = Flask(__name__)
@@ -171,7 +190,7 @@ async def fetch_market_data():
         symbolList.append(ltp_option)
 
 
-    symbolList = symbolList + symbolList1
+    symbolList = symbolList + symbolList1 + eqList
     # symbolList = symbolList1
     print("BELOW IS THE COMPLETE INSTRUMENT LIST")
     print(symbolList)
@@ -182,7 +201,7 @@ async def fetch_market_data():
         opt_search = re.search(r"(\d{2})(\w{3})((\d+)|(\d+\.\d+))(CE|PE)", symbol)
         fut_search = re.search(r"(\d{2}\w{3})(FUT)", symbol)
 
-        if opt_search or fut_search or symbol not in symbolList1:
+        if opt_search or fut_search or symbol not in symbolList1 or symbol in eqList:
             symbolList[count] = instr_token_dict[symbol]
         
         count += 1
@@ -232,6 +251,11 @@ async def connect_websocket(response, ssl_context, symbolList, symbol_dict):
 
                 # Set a timeout for receiving messages
                 while True:
+                    current_time = dt.datetime.now().time()
+                    if current_time >= end_time:
+                        websocket.close_connection()
+                        quit()
+                        break
                     try:
                         message = await asyncio.wait_for(websocket.recv(), timeout=60)
                         decoded_data = decode_protobuf(message)
