@@ -7,14 +7,18 @@ import urllib.parse
 import pandas as pd
 import requests
 import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+# sys.path.insert(0, './')
+from Upstox.constants import CLIENT_ID, CLIENT_SECRET
 
 step = 2
 step = int(step)
 
 def main():
 
-    client_id = ""
-    client_secret = ""
+    client_id = CLIENT_ID
+    client_secret = CLIENT_SECRET
 
     redirect_uri = 'https://www.google.com' # str | 
     api_version = '2.0' # str | API Version Header
